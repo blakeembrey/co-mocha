@@ -1,0 +1,35 @@
+{
+  "name": "co-mocha",
+  "version": "0.0.0",
+  "description": "Enable support for generators in Mocha tests",
+  "main": "co-mocha.js",
+  "scripts": {
+    "test": "node --harmony-generators node_modules/.bin/istanbul cover _mocha --require . -- -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/blakeembrey/co-mocha.git"
+  },
+  "keywords": [
+    "co",
+    "mocha",
+    "harmony",
+    "generators"
+  ],
+  "author": "Blake Embrey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blakeembrey/co-mocha/issues"
+  },
+  "homepage": "https://github.com/blakeembrey/co-mocha",
+  "devDependencies": {
+    "mocha": "~1.17.0",
+    "istanbul": "git://github.com/gotwarlost/istanbul#harmony"
+  },
+  "dependencies": {
+    "co": "3.x"
+  },
+  "peerDependencies": {
+    "mocha": "1.x"
+  }
+}
