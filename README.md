@@ -7,7 +7,7 @@ Currently you must use the `--harmony-generators` flag when running node 0.11.x 
 ## Installation
 
 ```
-npm install blakeembrey/co-mocha --save-dev
+npm install co-mocha --save-dev
 ```
 
 ## Usage
