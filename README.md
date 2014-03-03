@@ -12,7 +12,13 @@ npm install co-mocha --save-dev
 
 ## Usage
 
-Add `--require co-mocha` to your `mocha.opts`.
+Add `--require co-mocha` to your `mocha.opts`. Now you can write your tests using generators.
+
+```js
+it('should do something', function* () {
+  yield users.load(123);
+});
+```
 
 ## License
 
