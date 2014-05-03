@@ -9,8 +9,11 @@ var run      = Runnable.prototype.run;
  * @param {Function} fn
  */
 Runnable.prototype.run = function (fn) {
-  if (this.fn.constructor.name === 'GeneratorFunction') {
-    this.fn   = co(this.fn);
+  var result = this.fn();
+
+  if (typeof(result.next) == 'function' &&
+      typeof(result.throw) == 'function') {
+    this.fn   = co(result);
     this.sync = !(this.async = true);
   }
 
