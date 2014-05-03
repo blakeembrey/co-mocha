@@ -1,7 +1,8 @@
-var co       = require('co');
-var mocha    = require('mocha');
-var Runnable = mocha.Runnable;
-var run      = Runnable.prototype.run;
+var denodeify = require('rsvp').denodeify;
+var co        = require('co');
+var mocha     = require('mocha');
+var Runnable  = mocha.Runnable;
+var run       = Runnable.prototype.run;
 
 /**
  * Override the Mocha function runner and enable generator support with co.
@@ -9,9 +10,19 @@ var run      = Runnable.prototype.run;
  * @param {Function} fn
  */
 Runnable.prototype.run = function (fn) {
-  if (this.fn.constructor.name === 'GeneratorFunction') {
-    this.fn   = co(this.fn);
-    this.sync = !(this.async = true);
+  var func = this.fn;
+
+  if (!this.async) {
+    this.fn = function() {
+      var result = func();
+      var isIterator = result && result.next && result.throw;
+      if (isIterator) {
+        // If result is an iterator, return a promise
+        return denodeify(co(result))();
+      } else {
+        return result;
+      }
+    }
   }
 
   return run.call(this, fn);

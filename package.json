@@ -27,7 +27,8 @@
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony"
   },
   "dependencies": {
-    "co": "3.x"
+    "co": "3.x",
+    "rsvp": "^3.0.6"
   },
   "peerDependencies": {
     "mocha": "1.x"
