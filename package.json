@@ -23,11 +23,16 @@
   },
   "homepage": "https://github.com/blakeembrey/co-mocha",
   "devDependencies": {
-    "mocha": "~1.17.0",
-    "istanbul": "git://github.com/gotwarlost/istanbul#harmony"
+    "bluebird": "^1.2.4",
+    "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
+    "mocha": "^1.18.2",
+    "regenerator": "^0.4.7",
+    "traceur": "0.0.39"
   },
   "dependencies": {
-    "co": "3.x"
+    "co": "3.x",
+    "is-generator": "0.0.4",
+    "is-promise": "^1.0.0"
   },
   "peerDependencies": {
     "mocha": "1.x"
