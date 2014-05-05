@@ -12,13 +12,29 @@ npm install co-mocha --save-dev
 
 ## Usage
 
-Add `--require co-mocha` to your `mocha.opts`. Now you can write your tests using generators.
+Just require the module in your tests and start writing generators in your tests.
 
 ```js
 it('should do something', function* () {
   yield users.load(123);
 });
 ```
+
+### Node
+
+Install the module using `npm install co-mocha --save-dev`. Now just require the module to automatically monkey patch any available `mocha` instances. With `mocha`, you have multiple ways of requiring the module - add `--require co-mocha` to your `mocha.opts` or add `require('co-mocha')` inside your main test file.
+
+### AMD
+
+Not yet supported.
+
+### `<script>` Tag
+
+Not yet supported.
+
+## How It Works
+
+We monkey patch the `Runnable.prototype.run` method of `mocha` to enable generators. In contrast to other npm packages, `co-mocha` extends `mocha` at runtime - allowing you to use any compatible mocha version.
 
 ## License
 
