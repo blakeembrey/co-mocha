@@ -31,7 +31,7 @@ var coMocha = module.exports = function (mocha) {
 
     // Override the function to provide a special generator handler.
     this.fn = function (done) {
-      var result = sync ? func() : func(done);
+      var result = sync ? func.call(this) : func.call(this, done);
 
       if (isGenerator(result)) {
         return co(result)(done);

@@ -1,5 +1,6 @@
 /* global describe, it */
 
+var assert      = require('assert');
 var traceur     = require('traceur');
 var Promise     = require('bluebird');
 var regenerator = require('regenerator');
@@ -18,20 +19,26 @@ var wait = function (ms) {
 
 describe('co-mocha', function () {
   before(function* () {
+    this.coMochaTest = true;
     yield wait(100);
   });
 
   after(function* () {
     yield wait(100);
+    assert.ok(this.coMochaTest);
   });
 
-  it('should work synchronously', function () {});
+  it('should work synchronously', function () {
+    assert.ok(this.coMochaTest);
+  });
 
   it('should error synchronously', function () {
     throw new Error('You had one job');
   });
 
   it('should work with promises', function () {
+    assert.ok(this.coMochaTest);
+
     return new Promise(function (resolve) {
       return wait(100)(resolve);
     });
@@ -46,6 +53,8 @@ describe('co-mocha', function () {
   });
 
   it('should work with callbacks', function (done) {
+    assert.ok(this.coMochaTest);
+
     return wait(100)(done);
   });
 
@@ -64,6 +73,7 @@ describe('co-mocha', function () {
      */
     var testSource = [
       '(function* () {',
+      '  assert.ok(this.coMochaTest);',
       '  yield wait(100);',
       '});'
     ].join('\n');
