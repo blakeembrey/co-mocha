@@ -1,6 +1,6 @@
 var co          = require('co');
 var path        = require('path');
-var isPromise   = require('is-promise');
+var Promise     = require('bluebird');
 var isGenerator = require('is-generator');
 
 /**
@@ -24,27 +24,23 @@ var coMocha = module.exports = function (mocha) {
    */
   Runnable.prototype.run = function (fn) {
     var func = this.fn;
-    var sync = this.sync;
 
-    // Flip the async switch to always have a callback function provided.
-    this.sync = !(this.async = true);
+    if (this.sync) {
+      this.fn = function () {
+        var result = func.call(this);
 
-    // Override the function to provide a special generator handler.
-    this.fn = function (done) {
-      var result = sync ? func.call(this) : func.call(this, done);
+        // If the function returned a generator, pass the object to `co` and
+        // transform the result into a promise for compatibility with `mocha`.
+        // We are checking the function return since not all transpilers
+        // (looking at you, traceur) provide a method for detecting generator
+        // functions but all will return generator-like objects.
+        if (isGenerator(result)) {
+          return Promise.promisify(co(result), this)();
+        }
 
-      if (isGenerator(result)) {
-        return co(result)(done);
-      }
-
-      if (isPromise(result)) {
-        return result.then(function () {
-          return done();
-        }, done);
-      }
-
-      return sync && done();
-    };
+        return result;
+      };
+    }
 
     return run.call(this, fn);
   };

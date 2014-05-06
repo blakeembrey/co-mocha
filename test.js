@@ -20,47 +20,63 @@ var wait = function (ms) {
 describe('co-mocha', function () {
   before(function* () {
     this.coMochaTest = true;
+
     yield wait(100);
   });
 
   after(function* () {
     yield wait(100);
+
     assert.ok(this.coMochaTest);
   });
 
-  it('should work synchronously', function () {
-    assert.ok(this.coMochaTest);
-  });
+  describe('synchronous', function () {
+    it('should pass', function () {
+      assert.ok(this.coMochaTest);
+    });
 
-  it('should error synchronously', function () {
-    throw new Error('You had one job');
-  });
-
-  it('should work with promises', function () {
-    assert.ok(this.coMochaTest);
-
-    return new Promise(function (resolve) {
-      return wait(100)(resolve);
+    it('should fail', function () {
+      throw new Error('You had one job');
     });
   });
 
-  it('should error with promises', function () {
-    return new Promise(function (resolve, reject) {
-      return wait(100)(function () {
-        return reject(new Error('You promised me'));
+  describe('promises', function () {
+    it('should pass', function () {
+      assert.ok(this.coMochaTest);
+
+      return new Promise(function (resolve) {
+        return wait(100)(resolve);
+      });
+    });
+
+    it('should fail', function () {
+      return new Promise(function (resolve, reject) {
+        return wait(100)(function () {
+          return reject(new Error('You promised me'));
+        });
+      });
+    });
+
+    it.skip('should fail with falsy', function () {
+      return new Promise(function (resolve, reject) {
+        return wait(100)(function () {
+          return reject(null);
+        });
       });
     });
   });
 
-  it('should work with callbacks', function (done) {
-    assert.ok(this.coMochaTest);
+  describe('callbacks', function () {
+    it('should pass', function (done) {
+      assert.ok(this.coMochaTest);
 
-    return wait(100)(done);
-  });
+      return wait(100)(done);
+    });
 
-  it('should error with callbacks', function (done) {
-    return wait(100)(function () {
-      return done(new Error('You never called me back'));
+    it('should fail', function (done) {
+      return wait(100)(function () {
+        return done(new Error('You never called me back'));
+      });
     });
   });
 
@@ -85,34 +101,40 @@ describe('co-mocha', function () {
       '});'
     ].join('\n');
 
-    it(
-      'should work with es6 generators',
-      eval(testSource)
-    );
+    describe('es6', function () {
+      it(
+        'should pass',
+        eval(testSource)
+      );
 
-    it(
-      'should error with es6 generators',
-      eval(testErrorSource)
-    );
+      it(
+        'should fail',
+        eval(testErrorSource)
+      );
+    });
 
-    it(
-      'should work with regenerator generators',
-      eval(regenerator(testSource, { includeRuntime: true }))
-    );
+    describe('regenerator', function () {
+      it(
+        'should pass',
+        eval(regenerator(testSource, { includeRuntime: true }))
+      );
 
-    it(
-      'should error with regenerator generators',
-      eval(regenerator(testErrorSource, { includeRuntime: true }))
-    );
+      it(
+        'should fail',
+        eval(regenerator(testErrorSource, { includeRuntime: true }))
+      );
+    });
 
-    it(
-      'should work with traceur generators',
-      eval(traceur.compile(testSource).js)
-    );
+    describe('traceur', function () {
+      it(
+        'should work',
+        eval(traceur.compile(testSource).js)
+      );
 
-    it(
-      'should error with traceur generators',
-      eval(traceur.compile(testErrorSource).js)
-    );
+      it(
+        'should fail',
+        eval(traceur.compile(testErrorSource).js)
+      );
+    });
   });
 });
