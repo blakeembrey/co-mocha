@@ -4,6 +4,9 @@ var assert      = require('assert');
 var traceur     = require('traceur');
 var Promise     = require('bluebird');
 var regenerator = require('regenerator');
+var mocha       = require('mocha');
+var coMocha     = require('./')(mocha);
+var Runnable    = mocha.Runnable;
 
 /**
  * Wait a certain amount of time before proceeding to the callback.
@@ -11,72 +14,85 @@ var regenerator = require('regenerator');
  * @param  {Number}   ms
  * @return {Function}
  */
-var wait = function (ms) {
-  return function (fn) {
-    setTimeout(fn, ms);
-  };
+var nextTick = function () {
+  return process.nextTick;
 };
 
 describe('co-mocha', function () {
-  before(function* () {
-    this.coMochaTest = true;
-
-    yield wait(100);
-  });
-
-  after(function* () {
-    yield wait(100);
-
-    assert.ok(this.coMochaTest);
-  });
-
   describe('synchronous', function () {
-    it('should pass', function () {
-      assert.ok(this.coMochaTest);
-    });
-
-    it('should fail', function () {
-      throw new Error('You had one job');
-    });
-  });
-
-  describe('promises', function () {
-    it('should pass', function () {
-      assert.ok(this.coMochaTest);
-
-      return new Promise(function (resolve) {
-        return wait(100)(resolve);
-      });
-    });
-
-    it('should fail', function () {
-      return new Promise(function (resolve, reject) {
-        return wait(100)(function () {
-          return reject(new Error('You promised me'));
-        });
-      });
-    });
-
-    it.skip('should fail with falsy', function () {
-      return new Promise(function (resolve, reject) {
-        return wait(100)(function () {
-          return reject(null);
-        });
-      });
-    });
-  });
-
-  describe('callbacks', function () {
     it('should pass', function (done) {
-      assert.ok(this.coMochaTest);
+      var test = new Runnable('synchronous', function () {});
 
-      return wait(100)(done);
+      test.run(done);
     });
 
     it('should fail', function (done) {
-      return wait(100)(function () {
-        return done(new Error('You never called me back'));
+      var test = new Runnable('synchronous', function () {
+        throw new Error('You had one job');
       });
+
+      test.run(function (err) {
+        assert.ok(err);
+        assert.equal(err.message, 'You had one job');
+
+        return done();
+      })
+    });
+  });
+
+  describe('promise', function () {
+    it('should pass', function (done) {
+      var test = new Runnable('promise', function () {
+        return new Promise(function (resolve) {
+          return nextTick()(resolve);
+        });
+      });
+
+      test.run(done);
+    });
+
+    it('should fail', function (done) {
+      var test = new Runnable('promise', function () {
+        return new Promise(function (resolve, reject) {
+          return nextTick()(function () {
+            return reject(new Error('You promised me'));
+          });
+        });
+      });
+
+      test.run(function (err) {
+        assert.ok(err);
+        assert.equal(err.message, 'You promised me');
+
+        return done();
+      })
+    });
+
+    it('should fail with falsy');
+  });
+
+  describe('callback', function () {
+    it('should pass', function (done) {
+      var test = new Runnable('callback', function (done) {
+        return nextTick()(done);
+      });
+
+      test.run(done);
+    });
+
+    it('should fail', function (done) {
+      var test = new Runnable('callback', function (done) {
+        return nextTick()(function () {
+          return done(new Error('You never called me back'));
+        });
+      });
+
+      test.run(function (err) {
+        assert.ok(err);
+        assert.equal(err.message, 'You never called me back');
+
+        return done();
+      })
     });
   });
 
@@ -89,52 +105,82 @@ describe('co-mocha', function () {
      */
     var testSource = [
       '(function* () {',
-      '  assert.ok(this.coMochaTest);',
-      '  yield wait(100);',
+      '  yield nextTick();',
       '});'
     ].join('\n');
 
     var testErrorSource = [
       '(function* () {',
-      '  yield wait(100);',
+      '  yield nextTick();',
       '  throw new Error(\'This generation has failed\');',
       '});'
     ].join('\n');
 
     describe('es6', function () {
-      it(
-        'should pass',
-        eval(testSource)
-      );
+      it('should pass', function (done) {
+        var test = new Runnable('es6', eval(testSource));
 
-      it(
-        'should fail',
-        eval(testErrorSource)
-      );
+        test.run(done);
+      });
+
+      it('should fail', function (done) {
+        var test = new Runnable('es6', eval(testErrorSource));
+
+        test.run(function (err) {
+          assert.ok(err);
+          assert.equal(err.message, 'This generation has failed');
+
+          return done();
+        });
+      });
     });
 
     describe('regenerator', function () {
-      it(
-        'should pass',
-        eval(regenerator(testSource, { includeRuntime: true }))
-      );
+      it('should pass', function (done) {
+        var test = new Runnable('regenerator', eval(regenerator(testSource, {
+          includeRuntime: true
+        })));
 
-      it(
-        'should fail',
-        eval(regenerator(testErrorSource, { includeRuntime: true }))
-      );
+        test.run(done);
+      });
+
+      it('should fail', function (done) {
+        var test = new Runnable('regenerator', eval(
+          regenerator(testErrorSource, {
+            includeRuntime: true
+          })
+        ));
+
+        test.run(function (err) {
+          assert.ok(err);
+          assert.equal(err.message, 'This generation has failed');
+
+          return done();
+        });
+      });
     });
 
     describe('traceur', function () {
-      it(
-        'should work',
-        eval(traceur.compile(testSource).js)
-      );
+      it('should pass', function (done) {
+        var test = new Runnable(
+          'regenerator', eval(traceur.compile(testSource).js)
+        );
 
-      it(
-        'should fail',
-        eval(traceur.compile(testErrorSource).js)
-      );
+        test.run(done);
+      });
+
+      it('should fail', function (done) {
+        var test = new Runnable(
+          'regenerator', eval(traceur.compile(testErrorSource).js)
+        );
+
+        test.run(function (err) {
+          assert.ok(err);
+          assert.equal(err.message, 'This generation has failed');
+
+          return done();
+        });
+      });
     });
   });
 });

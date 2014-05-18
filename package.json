@@ -4,7 +4,7 @@
   "description": "Enable support for generators in Mocha tests",
   "main": "co-mocha.js",
   "scripts": {
-    "test": "node --harmony-generators node_modules/.bin/istanbul cover _mocha --require . -- -R spec"
+    "test": "node --harmony-generators node_modules/.bin/istanbul cover _mocha -- -R spec"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,7 @@
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
     "mocha": "^1.18.2",
     "regenerator": "^0.4.7",
-    "traceur": "0.0.39"
+    "traceur": "0.0.41"
   },
   "dependencies": {
     "bluebird": "^1.2.4",
