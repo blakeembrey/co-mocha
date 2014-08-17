@@ -26,12 +26,12 @@
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
     "mocha": "^1.18.2",
     "regenerator": "^0.4.7",
-    "traceur": "0.0.41"
+    "traceur": "0.0.58"
   },
   "dependencies": {
-    "bluebird": "^1.2.4",
+    "bluebird": "^2.3.0",
     "co": "3.x",
-    "is-generator": "0.0.4"
+    "is-generator": "^1.0.0"
   },
   "peerDependencies": {
     "mocha": ">=1.18 <2"
