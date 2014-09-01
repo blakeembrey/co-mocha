@@ -1,17 +1,16 @@
 /* global describe, it */
 
+var mocha       = require('mocha');
 var assert      = require('assert');
 var traceur     = require('traceur');
-var Promise     = require('bluebird');
+var Bluebird    = require('bluebird');
 var regenerator = require('regenerator');
-var mocha       = require('mocha');
 var coMocha     = require('./')(mocha);
 var Runnable    = mocha.Runnable;
 
 /**
- * Wait a certain amount of time before proceeding to the callback.
+ * Thunkify a function for `process.nextTick`.
  *
- * @param  {Number}   ms
  * @return {Function}
  */
 var nextTick = function () {
@@ -43,7 +42,7 @@ describe('co-mocha', function () {
   describe('promise', function () {
     it('should pass', function (done) {
       var test = new Runnable('promise', function () {
-        return new Promise(function (resolve) {
+        return new Bluebird(function (resolve) {
           return nextTick()(resolve);
         });
       });
@@ -53,7 +52,7 @@ describe('co-mocha', function () {
 
     it('should fail', function (done) {
       var test = new Runnable('promise', function () {
-        return new Promise(function (resolve, reject) {
+        return new Bluebird(function (resolve, reject) {
           return nextTick()(function () {
             return reject(new Error('You promised me'));
           });
@@ -67,8 +66,6 @@ describe('co-mocha', function () {
         return done();
       })
     });
-
-    it('should fail with falsy');
   });
 
   describe('callback', function () {

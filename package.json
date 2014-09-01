@@ -27,13 +27,13 @@
   },
   "homepage": "https://github.com/blakeembrey/co-mocha",
   "devDependencies": {
+    "bluebird": "^2.3.2",
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
     "mocha": "^1.18.2",
-    "regenerator": "^0.4.7",
+    "regenerator": "^0.4.12",
     "traceur": "0.0.58"
   },
   "dependencies": {
-    "bluebird": "^2.3.0",
     "co": "3.x",
     "is-generator": "^1.0.0"
   },
