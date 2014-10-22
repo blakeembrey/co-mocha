@@ -38,6 +38,6 @@
     "is-generator": "^1.0.0"
   },
   "peerDependencies": {
-    "mocha": ">=1.18 <2"
+    "mocha": ">=1.18 <3"
   }
 }
