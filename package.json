@@ -1,6 +1,6 @@
 {
   "name": "co-mocha",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Enable support for generators in Mocha tests",
   "main": "co-mocha.js",
   "scripts": {
