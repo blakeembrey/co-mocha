@@ -40,7 +40,7 @@ var coMocha = module.exports = function (mocha) {
  */
 var findNodeJSMocha = function () {
   var suffix   = path.sep + path.join('', 'mocha', 'index.js');
-  var children = require('module')._cache || {};
+  var children = require.cache || {};
 
   return Object.keys(children).filter(function (child) {
     return child.slice(suffix.length * -1) === suffix;
