@@ -40,12 +40,12 @@ var coMocha = module.exports = function (mocha) {
  */
 var findNodeJSMocha = function () {
   var suffix   = path.sep + path.join('', 'mocha', 'index.js');
-  var children = require.main && require.main.children || [];
+  var children = require.cache || {};
 
-  return children.filter(function (child) {
-    return child.id.slice(suffix.length * -1) === suffix;
+  return Object.keys(children).filter(function (child) {
+    return child.slice(suffix.length * -1) === suffix;
   }).map(function (child) {
-    return child.exports;
+    return children[child].exports;
   });
 };
 
