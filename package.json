@@ -34,7 +34,7 @@
     "traceur": "0.0.58"
   },
   "dependencies": {
-    "co": "3.x",
+    "co": "^4.0.0",
     "is-generator": "^1.0.0"
   },
   "peerDependencies": {

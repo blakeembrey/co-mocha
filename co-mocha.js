@@ -23,8 +23,7 @@ var coMocha = module.exports = function (mocha) {
    */
   Runnable.prototype.run = function (fn) {
     if (isGenFn(this.fn)) {
-      this.fn   = co(this.fn);
-      this.sync = !(this.async = true);
+      this.fn = co.wrap(this.fn);
     }
 
     return run.call(this, fn);
