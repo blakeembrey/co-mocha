@@ -133,19 +133,20 @@ describe('co-mocha', function () {
     });
 
     describe('regenerator', function () {
+
       it('should pass', function (done) {
-        var test = new Runnable('regenerator', eval(regenerator(testSource, {
+        var test = new Runnable('regenerator', eval(regenerator.compile(testSource, {
           includeRuntime: true
-        })));
+        }).code));
 
         test.run(done);
       });
 
       it('should fail', function (done) {
         var test = new Runnable('regenerator', eval(
-          regenerator(testErrorSource, {
+          regenerator.compile(testErrorSource, {
             includeRuntime: true
-          })
+          }).code
         ));
 
         test.run(function (err) {
@@ -158,9 +159,15 @@ describe('co-mocha', function () {
     });
 
     describe('traceur', function () {
+
+      traceur.require.makeDefault(function(filename) {
+        // don't transpile our dependencies, just our app
+        return filename.indexOf('node_modules') === -1;
+      });
+
       it('should pass', function (done) {
         var test = new Runnable(
-          'regenerator', eval(traceur.compile(testSource).js)
+          'regenerator', eval(traceur.compile(testSource))
         );
 
         test.run(done);
@@ -168,7 +175,7 @@ describe('co-mocha', function () {
 
       it('should fail', function (done) {
         var test = new Runnable(
-          'regenerator', eval(traceur.compile(testErrorSource).js)
+          'regenerator', eval(traceur.compile(testErrorSource))
         );
 
         test.run(function (err) {
