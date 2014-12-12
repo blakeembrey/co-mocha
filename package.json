@@ -30,6 +30,7 @@
     "bluebird": "^2.3.11",
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
     "mocha": "^2.0.1",
+    "regenerator": "^0.8.0",
     "traceur": "0.0.79"
   },
   "dependencies": {
