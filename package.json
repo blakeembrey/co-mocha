@@ -28,12 +28,12 @@
   "homepage": "https://github.com/blakeembrey/co-mocha",
   "devDependencies": {
     "bluebird": "^2.3.11",
-    "co": "^4.0.1",
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
     "mocha": "^2.0.1",
     "traceur": "0.0.79"
   },
   "dependencies": {
+    "co": "^4.0.1",
     "is-generator": "^1.0.0"
   },
   "peerDependencies": {
