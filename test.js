@@ -160,11 +160,6 @@ describe('co-mocha', function () {
 
     describe('traceur', function () {
 
-      traceur.require.makeDefault(function(filename) {
-        // don't transpile our dependencies, just our app
-        return filename.indexOf('node_modules') === -1;
-      });
-
       it('should pass', function (done) {
         var test = new Runnable(
           'regenerator', eval(traceur.compile(testSource))

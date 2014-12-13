@@ -34,10 +34,10 @@
     "traceur": "0.0.79"
   },
   "dependencies": {
-    "co": "^4.0.1",
+    "co": "^4.0.0",
     "is-generator": "^1.0.0"
   },
   "peerDependencies": {
-    "mocha": "^2.0.1"
+    "mocha": ">=1.18 <3"
   }
 }
