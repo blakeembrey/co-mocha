@@ -133,19 +133,20 @@ describe('co-mocha', function () {
     });
 
     describe('regenerator', function () {
+
       it('should pass', function (done) {
-        var test = new Runnable('regenerator', eval(regenerator(testSource, {
+        var test = new Runnable('regenerator', eval(regenerator.compile(testSource, {
           includeRuntime: true
-        })));
+        }).code));
 
         test.run(done);
       });
 
       it('should fail', function (done) {
         var test = new Runnable('regenerator', eval(
-          regenerator(testErrorSource, {
+          regenerator.compile(testErrorSource, {
             includeRuntime: true
-          })
+          }).code
         ));
 
         test.run(function (err) {
@@ -158,6 +159,7 @@ describe('co-mocha', function () {
     });
 
     describe('traceur', function () {
+
       it('should pass', function (done) {
         var test = new Runnable(
           'regenerator', eval(traceur.compile(testSource).js)
