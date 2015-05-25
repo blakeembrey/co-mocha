@@ -33,6 +33,7 @@
     "bluebird": "^2.3.11",
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
     "mocha": "^2.2.5",
+    "pre-commit": "^1.0.7",
     "regenerator": "^0.8.26",
     "standard": "^3.11.1",
     "traceur": "0.0.89"
