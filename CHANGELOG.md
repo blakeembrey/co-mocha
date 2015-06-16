@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.2](https://github.com/blakeembrey/co-mocha/compare/v1.1.1...v1.1.2) - 2015-06-17
+
+### Changed
+
+- Wrap `this.fn.toString` in a custom function to support the HTML reporter with function bodies.
+
+### Added
+
+- Created a project CHANGELOG.
+
 ## [1.1.1](https://github.com/blakeembrey/co-mocha/compare/v1.1.0...v1.1.1) - 2015-06-16
 
 ### Changed
