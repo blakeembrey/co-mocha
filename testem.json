@@ -1,0 +1,18 @@
+{
+  "framework": "mocha",
+  "src_files": [
+    "node_modules/chai/chai.js",
+    "node_modules/es6-promise/dist/es6-promise.js",
+    "co-mocha.js",
+    "test.js"
+  ],
+  "launchers": {
+    "node": {
+      "command": "node --harmony node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- -R tap --require lib/co-mocha.js --bail",
+      "protocol": "tap"
+    }
+  },
+  "launch_in_dev": [
+    "node"
+  ]
+}

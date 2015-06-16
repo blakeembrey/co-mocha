@@ -2,12 +2,21 @@
   "name": "co-mocha",
   "version": "1.1.0",
   "description": "Enable support for generators in Mocha tests",
-  "main": "co-mocha.js",
+  "main": "lib/co-mocha.js",
+  "files": [
+    "co-mocha.js",
+    "lib/",
+    "LICENSE"
+  ],
+  "browser": {
+    "path": false
+  },
   "scripts": {
     "lint": "standard",
-    "test-spec": "mocha -R spec --bail",
-    "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- -R spec --bail",
-    "test": "npm run lint && npm run test-cov"
+    "build": "browserify lib/co-mocha.js -s co-mocha -o co-mocha.js",
+    "test-spec": "mocha -R spec --require lib/co-mocha.js --bail",
+    "test-cov": "testem ci",
+    "test": "npm run lint && npm run build && npm run test-cov"
   },
   "repository": {
     "type": "git",
@@ -30,12 +39,24 @@
   },
   "homepage": "https://github.com/blakeembrey/co-mocha",
   "devDependencies": {
+    "browserify": "^10.2.4",
+    "chai": "^3.0.0",
+    "es6-promise": "^2.3.0",
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
     "mocha": "^2.2.5",
     "pre-commit": "^1.0.7",
     "regenerator": "^0.8.26",
     "standard": "^3.11.1",
+    "testem": "^0.8.3",
     "traceur": "0.0.89"
+  },
+  "standard": {
+    "ignore": [
+      "coverage/**",
+      "node_modules/**",
+      "bower_components/**",
+      "co-mocha.js"
+    ]
   },
   "dependencies": {
     "co": "^4.0.0",

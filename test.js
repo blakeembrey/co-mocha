@@ -1,13 +1,19 @@
 /* eslint-disable no-eval */
-/* global describe, it */
+/* global describe, it, chai, ES6Promise */
 
-var mocha = require('mocha')
-var assert = require('assert')
-var traceur = require('traceur')
-var regenerator = require('regenerator')
-var Runnable = mocha.Runnable
+var expect
+var Runnable
+var isNode = typeof require === 'function'
 
-require('./')(mocha)
+if (isNode) {
+  expect = require('chai').expect
+  Runnable = require('mocha').Runnable
+} else {
+  expect = chai.expect
+  Runnable = window.Mocha.Runnable
+
+  ES6Promise.polyfill()
+}
 
 /**
  * Thunkify a function for `process.nextTick`.
@@ -16,7 +22,7 @@ require('./')(mocha)
  */
 function defer () {
   return new Promise(function (resolve) {
-    setImmediate(resolve)
+    setTimeout(resolve, 0)
   })
 }
 
@@ -34,8 +40,8 @@ describe('co-mocha', function () {
       })
 
       test.run(function (err) {
-        assert.ok(err)
-        assert.equal(err.message, 'You had one job')
+        expect(err).to.exist
+        expect(err.message).to.equal('You had one job')
 
         return done()
       })
@@ -54,15 +60,15 @@ describe('co-mocha', function () {
     it('should fail', function (done) {
       var test = new Runnable('promise', function () {
         return new Promise(function (resolve, reject) {
-          return setImmediate(function () {
+          return setTimeout(function () {
             return reject(new Error('You promised me'))
-          })
+          }, 0)
         })
       })
 
       test.run(function (err) {
-        assert.ok(err)
-        assert.equal(err.message, 'You promised me')
+        expect(err).to.exist
+        expect(err.message).to.equal('You promised me')
 
         return done()
       })
@@ -72,7 +78,7 @@ describe('co-mocha', function () {
   describe('callback', function () {
     it('should pass', function (done) {
       var test = new Runnable('callback', function (done) {
-        return setImmediate(done)
+        return setTimeout(done, 0)
       })
 
       test.run(done)
@@ -80,14 +86,14 @@ describe('co-mocha', function () {
 
     it('should fail', function (done) {
       var test = new Runnable('callback', function (done) {
-        return setImmediate(function () {
+        return setTimeout(function () {
           return done(new Error('You never called me back'))
-        })
+        }, 0)
       })
 
       test.run(function (err) {
-        assert.ok(err)
-        assert.equal(err.message, 'You never called me back')
+        expect(err).to.exist
+        expect(err.message).to.equal('You never called me back')
 
         return done()
       })
@@ -109,6 +115,14 @@ describe('co-mocha', function () {
     ].join('\n')
 
     describe('es6', function () {
+      try {
+        eval('(function * () {})')
+      } catch (e) {
+        console.log('Generators are not supported natively, skipping...')
+
+        return
+      }
+
       it('should pass', function (done) {
         var test = new Runnable('es6', eval(TEST_SOURCE))
 
@@ -119,60 +133,65 @@ describe('co-mocha', function () {
         var test = new Runnable('es6', eval(TEST_ERROR_SOURCE))
 
         test.run(function (err) {
-          assert.ok(err)
-          assert.equal(err.message, 'This generation has failed')
+          expect(err).to.exist
+          expect(err.message).to.equal('This generation has failed')
 
           return done()
         })
       })
     })
 
-    describe('regenerator', function () {
-      it('should pass', function (done) {
-        var test = new Runnable('regenerator', eval(regenerator.compile(TEST_SOURCE, {
-          includeRuntime: true
-        }).code))
+    if (isNode) {
+      var traceur = require('traceur')
+      var regenerator = require('regenerator')
 
-        test.run(done)
-      })
-
-      it('should fail', function (done) {
-        var test = new Runnable('regenerator', eval(
-          regenerator.compile(TEST_ERROR_SOURCE, {
+      describe('regenerator', function () {
+        it('should pass', function (done) {
+          var test = new Runnable('regenerator', eval(regenerator.compile(TEST_SOURCE, {
             includeRuntime: true
-          }).code
-        ))
+          }).code))
 
-        test.run(function (err) {
-          assert.ok(err)
-          assert.equal(err.message, 'This generation has failed')
+          test.run(done)
+        })
 
-          return done()
+        it('should fail', function (done) {
+          var test = new Runnable('regenerator', eval(
+            regenerator.compile(TEST_ERROR_SOURCE, {
+              includeRuntime: true
+            }).code
+          ))
+
+          test.run(function (err) {
+            expect(err).to.exist
+            expect(err.message).to.equal('This generation has failed')
+
+            return done()
+          })
         })
       })
-    })
 
-    describe('traceur', function () {
-      it('should pass', function (done) {
-        var test = new Runnable(
-          'regenerator', eval(traceur.compile(TEST_SOURCE))
-        )
+      describe('traceur', function () {
+        it('should pass', function (done) {
+          var test = new Runnable(
+            'regenerator', eval(traceur.compile(TEST_SOURCE))
+          )
 
-        test.run(done)
-      })
+          test.run(done)
+        })
 
-      it('should fail', function (done) {
-        var test = new Runnable(
-          'regenerator', eval(traceur.compile(TEST_ERROR_SOURCE))
-        )
+        it('should fail', function (done) {
+          var test = new Runnable(
+            'regenerator', eval(traceur.compile(TEST_ERROR_SOURCE))
+          )
 
-        test.run(function (err) {
-          assert.ok(err)
-          assert.equal(err.message, 'This generation has failed')
+          test.run(function (err) {
+            expect(err).to.exist
+            expect(err.message).to.equal('This generation has failed')
 
-          return done()
+            return done()
+          })
         })
       })
-    })
+    }
   })
 })
