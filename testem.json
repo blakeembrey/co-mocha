@@ -7,12 +7,12 @@
     "test.js"
   ],
   "launchers": {
-    "node": {
+    "Node": {
       "command": "node --harmony node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- -R tap --require lib/co-mocha.js --bail",
       "protocol": "tap"
     }
   },
   "launch_in_dev": [
-    "node"
+    "Node"
   ]
 }
