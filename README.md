@@ -29,13 +29,22 @@ it('should do something', function * () {
 
 Install the module using `npm install co-mocha --save-dev`. Now just require the module to automatically monkey patch any available `mocha` instances. With `mocha`, you have multiple ways of requiring the module - add `--require co-mocha` to your `mocha.opts` or add `require('co-mocha')` inside your main test file.
 
+If you need to monkey patch a different mocha instance you can use the library directly:
+
+```js
+var mocha = require('mocha')
+var coMocha = require('co-mocha')
+
+coMocha(mocha)
+```
+
 ### `<script>` Tag
 
 ```html
 <script src="co-mocha.js"></script>
 ```
 
-Including the browserified script will automatically patch the `window.Mocha` instance. Just make sure you include it after `mocha.js`. If that is not possible, the library exports `window.coMocha` which can be used as `window.coMocha(window.Mocha)`.
+Including the browserified script will automatically patch `window.Mocha`. Just make sure you include it after `mocha.js`. If that is not possible the library exposes `window.coMocha`, which can be used (`window.coMocha(window.Mocha)`).
 
 ### AMD
 
