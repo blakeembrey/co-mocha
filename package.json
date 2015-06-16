@@ -30,7 +30,6 @@
   },
   "homepage": "https://github.com/blakeembrey/co-mocha",
   "devDependencies": {
-    "bluebird": "^2.3.11",
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
     "mocha": "^2.2.5",
     "pre-commit": "^1.0.7",

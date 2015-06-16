@@ -4,7 +4,6 @@
 var mocha = require('mocha')
 var assert = require('assert')
 var traceur = require('traceur')
-var Bluebird = require('bluebird')
 var regenerator = require('regenerator')
 var Runnable = mocha.Runnable
 
@@ -15,8 +14,10 @@ require('./')(mocha)
  *
  * @return {Function}
  */
-function nextTick () {
-  return process.nextTick
+function defer () {
+  return new Promise(function (resolve) {
+    setImmediate(resolve)
+  })
 }
 
 describe('co-mocha', function () {
@@ -44,9 +45,7 @@ describe('co-mocha', function () {
   describe('promise', function () {
     it('should pass', function (done) {
       var test = new Runnable('promise', function () {
-        return new Bluebird(function (resolve) {
-          return nextTick()(resolve)
-        })
+        return defer()
       })
 
       test.run(done)
@@ -54,8 +53,8 @@ describe('co-mocha', function () {
 
     it('should fail', function (done) {
       var test = new Runnable('promise', function () {
-        return new Bluebird(function (resolve, reject) {
-          return nextTick()(function () {
+        return new Promise(function (resolve, reject) {
+          return setImmediate(function () {
             return reject(new Error('You promised me'))
           })
         })
@@ -73,7 +72,7 @@ describe('co-mocha', function () {
   describe('callback', function () {
     it('should pass', function (done) {
       var test = new Runnable('callback', function (done) {
-        return nextTick()(done)
+        return setImmediate(done)
       })
 
       test.run(done)
@@ -81,7 +80,7 @@ describe('co-mocha', function () {
 
     it('should fail', function (done) {
       var test = new Runnable('callback', function (done) {
-        return nextTick()(function () {
+        return setImmediate(function () {
           return done(new Error('You never called me back'))
         })
       })
@@ -98,13 +97,13 @@ describe('co-mocha', function () {
   describe('generators', function () {
     var TEST_SOURCE = [
       '(function * () {',
-      '  yield nextTick();',
+      '  yield defer()',
       '})'
     ].join('\n')
 
     var TEST_ERROR_SOURCE = [
       '(function * () {',
-      '  yield nextTick()',
+      '  yield defer()',
       '  throw new Error(\'This generation has failed\')',
       '})'
     ].join('\n')
