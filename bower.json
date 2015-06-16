@@ -1,7 +1,7 @@
 {
   "name": "co-mocha",
   "main": "co-mocha.js",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "homepage": "https://github.com/blakeembrey/co-mocha",
   "authors": [
     "Blake Embrey <hello@blakeembrey.com>"
