@@ -28,8 +28,17 @@ function coMocha (mocha) {
    * @param {Function} fn
    */
   Runnable.prototype.run = function (fn) {
-    if (isGenFn(this.fn)) {
-      this.fn = co.wrap(this.fn)
+    var oldFn = this.fn
+
+    if (isGenFn(oldFn)) {
+      this.fn = co.wrap(oldFn)
+
+      // Replace `toString` to output the original function contents.
+      this.fn.toString = function () {
+        // https://github.com/mochajs/mocha/blob/7493bca76662318183e55294e906a4107433e20e/lib/utils.js#L251
+        return Function.prototype.toString.call(oldFn)
+          .replace(/^function *\* *\(.*\)\s*{/, 'function () {')
+      }
     }
 
     return run.call(this, fn)

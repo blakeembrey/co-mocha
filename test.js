@@ -123,6 +123,10 @@ describe('co-mocha', function () {
         return
       }
 
+      it('visual debugging', function * () {
+        yield Promise.resolve('This is purely for testing Mocha HTML output')
+      })
+
       it('should pass', function (done) {
         var test = new Runnable('es6', eval(TEST_SOURCE))
 
