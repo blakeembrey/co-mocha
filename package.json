@@ -14,7 +14,7 @@
   "scripts": {
     "lint": "standard",
     "build": "browserify lib/co-mocha.js -s co-mocha -o co-mocha.js",
-    "test-spec": "mocha -R spec --require lib/co-mocha.js --bail",
+    "test-spec": "mocha --harmony -R spec --require lib/co-mocha.js --bail",
     "test-cov": "testem ci -l Firefox,Node",
     "test": "npm run lint && npm run build && npm run test-cov"
   },
