@@ -39,16 +39,16 @@
   },
   "homepage": "https://github.com/blakeembrey/co-mocha",
   "devDependencies": {
-    "browserify": "^10.2.4",
+    "browserify": "^13.1.1",
     "chai": "^3.0.0",
-    "es6-promise": "^2.3.0",
+    "es6-promise": "^4.0.5",
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
-    "mocha": "^2.2.5",
+    "mocha": "^3.1.2",
     "pre-commit": "^1.0.7",
     "regenerator": "^0.8.26",
-    "standard": "^3.11.1",
-    "testem": "^0.8.3",
-    "traceur": "0.0.89"
+    "standard": "^8.5.0",
+    "testem": "^1.13.0",
+    "traceur": "0.0.111"
   },
   "standard": {
     "ignore": [
