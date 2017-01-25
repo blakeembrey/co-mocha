@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/blakeembrey/co-mocha",
   "devDependencies": {
-    "browserify": "^13.1.1",
+    "browserify": "^14.0.0",
     "chai": "^3.0.0",
     "es6-promise": "^4.0.5",
     "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
