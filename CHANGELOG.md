@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.0](https://github.com/blakeembrey/co-mocha/compare/v1.1.3...v1.2.0) - 2017-01-24
+
+### Changed
+
+- Check `exports.name` when auto-hooking Mocha instead of matching path name (for alternative NPM clients that link)
+
+## [1.1.3](https://github.com/blakeembrey/co-mocha/compare/v1.1.2...v1.1.3) - 2016-08-01
+
+### Changed
+
+- Update Mocha `peerDependency` version range
+
 ## [1.1.2](https://github.com/blakeembrey/co-mocha/compare/v1.1.1...v1.1.2) - 2015-06-17
 
 ### Changed
