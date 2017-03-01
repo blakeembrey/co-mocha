@@ -1,15 +1,15 @@
 /* eslint-disable no-eval */
 /* global describe, it, chai, ES6Promise */
 
-var expect
+var assert
 var Runnable
 var isNode = typeof require === 'function'
 
 if (isNode) {
-  expect = require('chai').expect
+  assert = require('chai').assert
   Runnable = require('mocha').Runnable
 } else {
-  expect = chai.expect
+  assert = chai.assert
   Runnable = window.Mocha.Runnable
 
   ES6Promise.polyfill()
@@ -40,8 +40,8 @@ describe('co-mocha', function () {
       })
 
       test.run(function (err) {
-        expect(err).to.exist
-        expect(err.message).to.equal('You had one job')
+        assert(err instanceof Error)
+        assert.equal(err.message, 'You had one job')
 
         return done()
       })
@@ -67,8 +67,8 @@ describe('co-mocha', function () {
       })
 
       test.run(function (err) {
-        expect(err).to.exist
-        expect(err.message).to.equal('You promised me')
+        assert(err instanceof Error)
+        assert.equal(err.message, 'You promised me')
 
         return done()
       })
@@ -92,8 +92,8 @@ describe('co-mocha', function () {
       })
 
       test.run(function (err) {
-        expect(err).to.exist
-        expect(err.message).to.equal('You never called me back')
+        assert(err instanceof Error)
+        assert.equal(err.message, 'You never called me back')
 
         return done()
       })
@@ -137,8 +137,8 @@ describe('co-mocha', function () {
         var test = new Runnable('es6', eval(TEST_ERROR_SOURCE))
 
         test.run(function (err) {
-          expect(err).to.exist
-          expect(err.message).to.equal('This generation has failed')
+          assert(err instanceof Error)
+          assert.equal(err.message, 'This generation has failed')
 
           return done()
         })
@@ -166,8 +166,8 @@ describe('co-mocha', function () {
           ))
 
           test.run(function (err) {
-            expect(err).to.exist
-            expect(err.message).to.equal('This generation has failed')
+            assert(err instanceof Error)
+            assert.equal(err.message, 'This generation has failed')
 
             return done()
           })
@@ -189,8 +189,8 @@ describe('co-mocha', function () {
           )
 
           test.run(function (err) {
-            expect(err).to.exist
-            expect(err.message).to.equal('This generation has failed')
+            assert(err instanceof Error)
+            assert.equal(err.message, 'This generation has failed')
 
             return done()
           })
