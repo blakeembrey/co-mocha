@@ -42,7 +42,7 @@
     "browserify": "^14.0.0",
     "chai": "^3.0.0",
     "es6-promise": "^4.0.5",
-    "istanbul": "git://github.com/gotwarlost/istanbul#harmony",
+    "istanbul": "^1.1.0-alpha.1",
     "mocha": "^3.1.2",
     "pre-commit": "^1.0.7",
     "regenerator": "^0.9.0",
