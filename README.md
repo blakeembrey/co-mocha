@@ -4,6 +4,7 @@
 [![NPM downloads][downloads-image]][downloads-url]
 [![Build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
+[![Greenkeeper badge](https://badges.greenkeeper.io/blakeembrey/co-mocha.svg)](https://greenkeeper.io/)
 
 Enable support for generators in Mocha tests using [co](https://github.com/visionmedia/co).
 
