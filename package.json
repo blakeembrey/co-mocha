@@ -8,9 +8,6 @@
     "lib/",
     "LICENSE"
   ],
-  "browser": {
-    "path": false
-  },
   "scripts": {
     "lint": "standard",
     "build": "browserify lib/co-mocha.js -s co-mocha -o co-mocha.js",
