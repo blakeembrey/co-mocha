@@ -37,7 +37,7 @@
   "homepage": "https://github.com/blakeembrey/co-mocha",
   "devDependencies": {
     "browserify": "^14.0.0",
-    "chai": "^3.0.0",
+    "chai": "^4.0.1",
     "es6-promise": "^4.0.5",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "*",
