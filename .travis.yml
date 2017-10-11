@@ -9,18 +9,22 @@ notifications:
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-
-before_script:
   - npm install $MOCHA --force
 
 env:
   - MOCHA=mocha@1
   - MOCHA=mocha@2
   - MOCHA=mocha@3
+  - MOCHA=mocha@4
 
 node_js:
   - "0.10"
   - "4"
   - "stable"
+
+matrix:
+  exclude:
+  - env: MOCHA=mocha@4
+    node_js: "0.10"
 
 after_script: "npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
