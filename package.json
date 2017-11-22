@@ -41,7 +41,7 @@
     "es6-promise": "^4.0.5",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "*",
-    "regenerator": "^0.10.0",
+    "regenerator": "^0.11.1",
     "standard": "^10.0.0",
     "testem": "^1.13.0",
     "traceur": "0.0.111"
