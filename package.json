@@ -59,6 +59,6 @@
     "is-generator": "^1.0.1"
   },
   "peerDependencies": {
-    "mocha": ">=1.18 <5"
+    "mocha": ">=1.18"
   }
 }
